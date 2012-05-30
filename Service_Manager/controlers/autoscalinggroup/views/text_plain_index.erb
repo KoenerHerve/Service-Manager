@@ -1,0 +1,25 @@
+Category: autoscalinggroup;<br />
+scheme=<%= @autoscalinggroup.kind %>;<br />
+class="kind";<br />
+<% if(!@autoscalinggroup.mixins.nil?) %>
+	<% @autoscalinggroup.mixins.split(',').each do |mixin| %>
+		Category: <%= mixin.split('#').last %><br />
+		scheme=<%= mixin.split('#')[0] %>#;<br />
+		class="mixin";<br />
+	<% end %>
+<% end %>
+<% if(!@links.nil?) %>
+	<% @links.each do |link| %>
+		link:&lt;<%= link.target %>><br />
+		rel="<%= @autoscalinggroup.kind %>autoscalinggroup";<br />
+		self="<%= link.location %>";<br />
+		category="<%= link.kind %>dependence";<br />
+	<% end %>
+<% end %>
+X-OCCI-Attribute: occi.core.id = "<%= @autoscalinggroup.id %>"<br />
+X-OCCI-Attribute: occi.core.title = "<%= @autoscalinggroup.title %>"<br />
+X-OCCI-Attribute: occi.core.summary = "<%= @autoscalinggroup.summary %>"<br />
+X-OCCI-Attribute: occi.servicemanager.state = "<%= @autoscalinggroup.state %>"<br />
+X-OCCI-Attribute: occi.servicemanager.size = <%= @autoscalinggroup.size %><br />
+X-OCCI-Attribute: occi.servicemanager.min = <%= @autoscalinggroup.min %><br />
+X-OCCI-Attribute: occi.servicemanager.max = <%= @autoscalinggroup.max %><br />

@@ -1,0 +1,2 @@
+class KindError < StandardError
+end

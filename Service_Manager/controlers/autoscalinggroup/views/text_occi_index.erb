@@ -1,0 +1,29 @@
+Category: autoscalinggroup;
+scheme=<%= @autoscalinggroup.kind %>;
+class="kind"; <%= "," if(!@autoscalinggroup.mixins.nil?) %><br />
+<% if(!@autoscalinggroup.mixins.nil?) %>
+	<% mixins = @autoscalinggroup.mixins.split(',') %>
+	<% mixins.each_index do |id| %>
+		<% mixin = mixins[id] %>
+		<%= mixin.split('#').last %>
+		scheme=<%= mixin.split('#')[0] %>#;
+		class="mixin";<%= "," if(id < (mixins.length-1)) %><br />
+	<% end %>
+<% end %>
+<% if(!@links.empty?) %>
+	link:
+	<% @links.each_index do |id| %>
+		<% link = @links[id] %>
+		&lt;<%= link.target %>><br />
+		rel="<%= @autoscalinggroup.kind %>autoscalinggroup";<br />
+		self="<%= link.location %>";<br />
+		category="<%= link.kind %>dependence";<%= "," if(id < (@links.length-1)) %><br />
+	<% end %>
+<% end %>
+X-OCCI-Attribute: occi.core.id = "<%= @autoscalinggroup.id %>" ,<br />
+occi.core.title = "<%= @autoscalinggroup.title %>" ,<br />
+occi.core.summary = "<%= @autoscalinggroup.summary %>" ,<br />
+occi.servicemanager.state = "<%= @autoscalinggroup.state %>" ,<br />
+occi.servicemanager.size = <%= @autoscalinggroup.size %> ,<br />
+occi.servicemanager.min = <%= @autoscalinggroup.min %> ,<br />
+occi.servicemanager.max = <%= @autoscalinggroup.max %> ,<br />

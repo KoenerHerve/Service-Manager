@@ -1,0 +1,14 @@
+Category: dependence;<br />
+scheme=<%= @dependence.kind %>;<br />
+class="kind";<br />
+<% if(!@dependence.mixins.nil?) %>
+	<% @dependence.mixins.split(',').each do |mixin| %>
+		Category: <%= mixin.split('#').last %><br />
+		scheme=<%= mixin.split('#')[0] %>#;<br />
+		class="mixin";<br />
+	<% end %>
+<% end %>
+X-OCCI-Attribute: occi.core.id = "<%= @dependence.id %>"<br />
+X-OCCI-Attribute: occi.core.title = "<%= @dependence.title %>"<br />
+X-OCCI-Attribute: occi.core.source = "<%= @dependence.source %>"<br />
+X-OCCI-Attribute: occi.core.target = "<%= @dependence.target %>"<br />

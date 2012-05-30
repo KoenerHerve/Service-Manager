@@ -1,0 +1,45 @@
+<%= "Category: " if !(@kinds.empty? && @actions.empty? && @mixins.empty?) %>
+<% if(!@kinds.empty?) %>
+	<% @kinds.each_index do |id| %>
+		<% kind = @kinds[id] %>
+		<%= kind.term %>;
+		scheme="<%= kind.scheme %>";
+		class="kind";
+		title="<%= kind.title %>";
+		<% if(!kind.rel.nil?) %>
+			rel="<%= kind.rel %>";
+		<% end %>
+		attributes="<%= kind.attributes %>";
+		<% if(!kind.actions.nil?) %>
+			actions="<%= kind.actions %>";
+		<% end %>
+		location="<%= kind.location %>";<%= "," if (id < (@kinds.length-1) || !(@actions.empty? && @mixins.empty?)) %><br />
+	<% end %>
+<% end %>
+<% if(!@actions.empty?) %>
+	<% @actions.each_index do |id| %>
+		<% action = @actions[id] %>
+		<%= action.term %>;
+		scheme="<%= action.scheme %>";
+		class="action";
+		title="<%= action.title %>";
+		attributes=<%= (action.attributes != nil)? action.attributes.dump: action.attributes %>;<%= "," if (id < (@kinds.length-1) || !@mixins.empty?) %><br />
+	<% end %>
+<% end %>
+<% if(!@mixins.empty?) %>
+	<% @mixins.each_index do |id| %>
+		<% mixin = @mixins[id] %>
+		<%= mixin.term %>;
+		scheme="<%= mixin.scheme %>";
+		class="mixin";<br />
+		title="<%= mixin.title %>";
+		attributes=<%= (mixin.attributes != nil)? mixin.attributes.dump: mixin.attributes %>;
+		<% if(!mixin.actions.nil?) %>
+			actions="<%= mixin.actions %>";
+		<% end %>
+		<% if(!mixin.related.nil?) %>
+			rel="<%= mixin.related %>";<br />
+		<% end %>
+		location="<%= mixin.location %>";<%= "," if id < (@kinds.length-1) %><br />
+	<% end %>
+<% end %>

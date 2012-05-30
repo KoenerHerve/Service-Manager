@@ -1,0 +1,16 @@
+Category: group;
+scheme=<%= @group.kind %>;
+class="kind"; <%= "," if(!@group.mixins.nil?) %><br />
+<% if(!@group.mixins.nil?) %>
+	<% mixins = @group.mixins.split(',') %>
+	<% mixins.each_index do |id| %>
+		<% mixin = mixins[id] %>
+		<%= mixin.split('#').last %>
+		scheme=<%= mixin.split('#')[0] %>#;
+		class="mixin";<%= "," if(id < (mixins.length-1)) %><br />
+	<% end %>
+<% end %>
+X-OCCI-Attribute: occi.core.id = "<%= @group.id %>",<br />
+occi.core.title = "<%= @group.title %>",<br />
+occi.core.source = "<%= @group.source %>",<br />
+occi.core.target = "<%= @group.target %>",<br />

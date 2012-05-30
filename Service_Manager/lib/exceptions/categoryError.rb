@@ -1,0 +1,2 @@
+class CategoryError < NotFoundError
+end

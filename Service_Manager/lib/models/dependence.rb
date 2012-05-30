@@ -1,0 +1,3 @@
+class Dependence < Link
+end
+

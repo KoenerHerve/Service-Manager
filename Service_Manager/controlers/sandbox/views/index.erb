@@ -1,0 +1,60 @@
+<html>
+<head>
+<title>Welcome to the sandbox</title>
+<script type="text/javascript">
+
+	function submitform(){
+		var form = document.sandbox;
+		var req =  createInstance();
+		var data = form.data.value;
+
+		req.onreadystatechange = function(){
+			if(req.readyState == 4){
+				if(req.status == 200){
+					win=window.open('','sandbox','width=500,height=500,scrollbars=1');
+					win.document.write(req.responseText);
+					win.focus();
+				}else{
+					alert("Error: returned status code " + req.status + " " + req.statusText);
+				}
+			}
+		}
+		req.open(form.method.value, form.url.value, true); 
+		req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		req.send(data);
+	}
+
+	function createInstance(){
+		var req = null;
+		if(window.XMLHttpRequest){
+			req = new XMLHttpRequest();
+		}else if(window.ActiveXObject){
+			try{
+				req = new ActiveXObject("Msxml2.XMLHTTP");
+			}catch(e){
+				try{
+					req = new ActiveXObject("Microsoft.XMLHTTP");
+				}catch(e){
+					alert("XHR not created");
+				}
+			}
+		}
+		return req;
+	}
+</script>
+</head>
+<body>
+<h1>Welcome to the sandbox</h1>
+<form name="sandbox" method="post" action="">  
+	URL: <input type="input" name="url" size="35" /> <br/>
+	Method: <select name="method">
+		<option value="GET">GET</option>
+		<option value="POST">POST</option>
+		<option value="PUT">PUT</option>
+		<option value="DELETE">DELETE</option>
+	</select> <br/>
+	data: <br />
+	<textarea name="data"></textarea> <br/>
+	<input type="button" onClick="submitform()" value="send" />  
+</form> 
+</body>

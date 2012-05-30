@@ -1,0 +1,25 @@
+Category: service;
+scheme=<%= @service.kind %>;
+class="kind";<% if(!@service.mixins.nil?) %>
+	<% mixins = @service.mixins.split(',') %>
+	<% mixins.each_index do |id| %>
+		<% mixin = mixins[id] %>
+		<%= mixin.split('#').last %>
+		scheme=<%= mixin.split('#')[0] %>#;
+		class="mixin";<%= "," if(id < (mixins.length-1)) %><br />
+	<% end %>
+<% end %>
+<% if(!@links.empty?) %>
+	link:
+	<% @links.each_index do |id| %>
+		<% link = @links[id] %>
+		&lt;<%= link.target %>><br />
+		rel="<%= @service.kind %>service";<br />
+		self="<%= link.location %>";<br />
+		category="<%= link.kind %>group";<%= "," if(id < (@links.length-1)) %><br />
+	<% end %>
+<% end %>
+X-OCCI-Attribute: occi.core.id = "<%= @service.id %>",<br />
+occi.core.title = "<%= @service.title %>",<br />
+occi.core.summary = "<%= @service.summary %>",<br />
+occi.servicemanager.state = "<%= @service.state %>"<br />

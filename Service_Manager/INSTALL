@@ -1,0 +1,18 @@
+# Installation of Mysql
+# ---------------------
+sudo apt-get install mysql-server
+
+# Installation of curl
+# ---------------------
+sudo apt-get install curl libcurl3 libcurl3-gnutls libcurl4-openssl-dev
+sudo gem install curb
+
+# Installation of libxml
+# ---------------------
+sudo apt-get install libxml2 libxml2-dev libxslt1-dev
+sudo gem install nokogiri
+
+# Creation of the database
+# -------------------------
+mysql --user=root --password
+> CREATE DATABASE service_manager;

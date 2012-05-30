@@ -1,0 +1,5 @@
+X-OCCI-Location: 
+<% @resources.each_index do |id| %>
+	<% resource = @resources[id] %>
+	<%= resource %><%= "," if(id < (@resources.length-1)) %><br />
+<% end %>

@@ -1,0 +1,2 @@
+class MixinError < ForbiddenError
+end

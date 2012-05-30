@@ -1,0 +1,35 @@
+<% @kinds.each do |kind| %>
+Category: <%= kind.term %>;<br />
+	scheme="<%= kind.scheme %>";<br />
+	class="kind";<br />
+	title="<%= kind.title %>";<br />
+	<% if(!kind.rel.nil?) %>
+		rel="<%= kind.rel %>";<br />
+	<% end %>
+	attributes="<%= kind.attributes %>";<br />
+	<% if(!kind.actions.nil?) %>
+		actions="<%= kind.actions %>";<br />
+	<% end %>
+	location="<%= kind.location %>";<br />
+<% end %>
+<% @actions.each do |action| %>
+Category: <%= action.term %>;<br />
+	scheme="<%= action.scheme %>";<br />
+	class="action";<br />
+	title="<%= action.title %>";<br />
+	attributes=<%= (action.attributes != nil)? action.attributes.dump: action.attributes%>;<br />
+<% end %>
+<% @mixins.each do |mixin| %>
+Category: <%= mixin.term %>;<br />
+	scheme="<%= mixin.scheme %>";<br />
+	class="mixin";<br />
+	title="<%= mixin.title %>";<br />
+	attributes=<%= (mixin.attributes != nil)? mixin.attributes.dump: mixin.attributes %>;<br />
+	<% if(!mixin.actions.nil?) %>
+		actions="<%= mixin.actions %>";<br />
+	<% end %>
+	<% if(!mixin.related.nil?) %>
+		rel="<%= mixin.related %>";<br />
+	<% end %>
+	location="<%= mixin.location %>";<br />
+<% end %>

@@ -1,0 +1,2 @@
+class KindNotFoundError < NotFoundError
+end
