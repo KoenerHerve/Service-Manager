@@ -1,25 +1,8 @@
--- phpMyAdmin SQL Dump
--- version 3.3.7deb7
--- http://www.phpmyadmin.net
---
--- Serveur: localhost
--- Généré le : Lun 28 Mai 2012 à 10:40
--- Version du serveur: 5.1.61
--- Version de PHP: 5.3.3-7+squeeze9
-
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-
---
--- Base de données: `service_manager`
---
-
--- --------------------------------------------------------
+-- ---------------------------------- --
+-- service_manager.sql                --
+-- Base de donnees du Service Manager --
+-- Auteur: Koener Herve               --
+-- ---------------------------------- -- 
 
 --
 -- Structure de la table `action`
@@ -34,7 +17,7 @@ CREATE TABLE IF NOT EXISTS `action` (
   KEY `category` (`category`),
   KEY `kind` (`kind`),
   KEY `mixin` (`mixin`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB AUTO_INCREMENT=10 ;
 
 --
 -- Contenu de la table `action`
@@ -66,11 +49,9 @@ CREATE TABLE IF NOT EXISTS `autoscalinggroup` (
   `min` int(11) NOT NULL DEFAULT '0',
   `max` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
---
--- Contenu de la table `autoscalinggroup`
---
+
 
 
 -- --------------------------------------------------------
@@ -86,11 +67,9 @@ CREATE TABLE IF NOT EXISTS `autoscalinggroup_extension` (
   PRIMARY KEY (`id`),
   KEY `autoscalinggroup` (`autoscalinggroup`),
   KEY `mixin` (`mixin`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
---
--- Contenu de la table `autoscalinggroup_extension`
---
+
 
 
 -- --------------------------------------------------------
@@ -107,11 +86,9 @@ CREATE TABLE IF NOT EXISTS `category` (
   `attributes` text,
   PRIMARY KEY (`id`),
   UNIQUE KEY `scheme` (`scheme`,`term`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  AUTO_INCREMENT=10 ;
 
---
--- Contenu de la table `category`
---
+
 
 INSERT INTO `category` (`id`, `scheme`, `term`, `title`, `attributes`) VALUES
 (1, 'http://schemas.ogf.org/serviceManager/service/action#', 'start', 'start', NULL),
@@ -138,11 +115,9 @@ CREATE TABLE IF NOT EXISTS `dependence` (
   PRIMARY KEY (`id`),
   KEY `source` (`source`),
   KEY `target` (`target`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
---
--- Contenu de la table `dependence`
---
+
 
 
 -- --------------------------------------------------------
@@ -158,11 +133,9 @@ CREATE TABLE IF NOT EXISTS `dependence_extension` (
   PRIMARY KEY (`id`),
   KEY `dependence` (`dependence`),
   KEY `mixin` (`mixin`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
---
--- Contenu de la table `dependence_extension`
---
+
 
 
 -- --------------------------------------------------------
@@ -179,11 +152,9 @@ CREATE TABLE IF NOT EXISTS `group` (
   PRIMARY KEY (`id`),
   KEY `source` (`source`),
   KEY `target` (`target`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
---
--- Contenu de la table `group`
---
+
 
 
 -- --------------------------------------------------------
@@ -199,11 +170,7 @@ CREATE TABLE IF NOT EXISTS `group_extension` (
   PRIMARY KEY (`id`),
   KEY `group` (`group`),
   KEY `mixin` (`mixin`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
---
--- Contenu de la table `group_extension`
---
+) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
 
 -- --------------------------------------------------------
@@ -223,7 +190,7 @@ CREATE TABLE IF NOT EXISTS `kind` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `scheme` (`scheme`,`term`),
   KEY `related` (`related`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB AUTO_INCREMENT=8 ;
 
 --
 -- Contenu de la table `kind`
@@ -255,7 +222,7 @@ CREATE TABLE IF NOT EXISTS `mixin` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `scheme` (`scheme`,`term`),
   KEY `kind` (`kind`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
+) ENGINE=InnoDB AUTO_INCREMENT=12 ;
 
 --
 -- Contenu de la table `mixin`
@@ -287,7 +254,7 @@ CREATE TABLE IF NOT EXISTS `mixin_relation` (
   PRIMARY KEY (`id`),
   KEY `mixin` (`mixin`),
   KEY `related` (`related`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB AUTO_INCREMENT=8 ;
 
 --
 -- Contenu de la table `mixin_relation`
@@ -314,11 +281,7 @@ CREATE TABLE IF NOT EXISTS `service` (
   `summary` text,
   `state` varchar(8) NOT NULL DEFAULT 'inactive',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
---
--- Contenu de la table `service`
---
+) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
 
 -- --------------------------------------------------------
@@ -334,7 +297,7 @@ CREATE TABLE IF NOT EXISTS `service_extension` (
   PRIMARY KEY (`id`),
   KEY `service` (`service`),
   KEY `mixin` (`mixin`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
 --
 -- Contenu de la table `service_extension`
@@ -353,16 +316,14 @@ CREATE TABLE IF NOT EXISTS `vm` (
   `autoscalinggroup` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `autoscalinggroup` (`autoscalinggroup`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
---
--- Contenu de la table `vm`
---
+) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
 
---
--- Contraintes pour les tables exportées
---
+-- --------------------------------------------------------- --
+--                    LISTE DES CONTRAINTES                  --
+-- --------------------------------------------------------- --
+
+
 
 --
 -- Contraintes pour la table `action`
@@ -372,12 +333,16 @@ ALTER TABLE `action`
   ADD CONSTRAINT `action_ibfk_2` FOREIGN KEY (`kind`) REFERENCES `kind` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `action_ibfk_3` FOREIGN KEY (`mixin`) REFERENCES `mixin` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
+
+
 --
 -- Contraintes pour la table `autoscalinggroup_extension`
 --
 ALTER TABLE `autoscalinggroup_extension`
   ADD CONSTRAINT `autoscalinggroup_extension_ibfk_1` FOREIGN KEY (`autoscalinggroup`) REFERENCES `autoscalinggroup` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `autoscalinggroup_extension_ibfk_2` FOREIGN KEY (`mixin`) REFERENCES `mixin` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
 
 --
 -- Contraintes pour la table `dependence`
@@ -386,12 +351,16 @@ ALTER TABLE `dependence`
   ADD CONSTRAINT `dependence_ibfk_1` FOREIGN KEY (`source`) REFERENCES `autoscalinggroup` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `dependence_ibfk_2` FOREIGN KEY (`target`) REFERENCES `autoscalinggroup` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
+
+
 --
 -- Contraintes pour la table `dependence_extension`
 --
 ALTER TABLE `dependence_extension`
   ADD CONSTRAINT `dependence_extension_ibfk_1` FOREIGN KEY (`dependence`) REFERENCES `dependence` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `dependence_extension_ibfk_2` FOREIGN KEY (`mixin`) REFERENCES `mixin` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
 
 --
 -- Contraintes pour la table `group`
@@ -400,6 +369,8 @@ ALTER TABLE `group`
   ADD CONSTRAINT `group_ibfk_1` FOREIGN KEY (`source`) REFERENCES `service` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `group_ibfk_2` FOREIGN KEY (`target`) REFERENCES `autoscalinggroup` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
+
+
 --
 -- Contraintes pour la table `group_extension`
 --
@@ -407,17 +378,23 @@ ALTER TABLE `group_extension`
   ADD CONSTRAINT `group_extension_ibfk_1` FOREIGN KEY (`group`) REFERENCES `group` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `group_extension_ibfk_2` FOREIGN KEY (`mixin`) REFERENCES `mixin` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
+
+
 --
 -- Contraintes pour la table `kind`
 --
 ALTER TABLE `kind`
   ADD CONSTRAINT `kind_ibfk_1` FOREIGN KEY (`related`) REFERENCES `kind` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
+
+
 --
 -- Contraintes pour la table `mixin`
 --
 ALTER TABLE `mixin`
   ADD CONSTRAINT `mixin_ibfk_1` FOREIGN KEY (`kind`) REFERENCES `kind` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
 
 --
 -- Contraintes pour la table `mixin_relation`
@@ -426,6 +403,8 @@ ALTER TABLE `mixin_relation`
   ADD CONSTRAINT `mixin_relation_ibfk_1` FOREIGN KEY (`mixin`) REFERENCES `mixin` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `mixin_relation_ibfk_2` FOREIGN KEY (`related`) REFERENCES `mixin` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
+
+
 --
 -- Contraintes pour la table `service_extension`
 --
@@ -433,8 +412,14 @@ ALTER TABLE `service_extension`
   ADD CONSTRAINT `service_extension_ibfk_1` FOREIGN KEY (`service`) REFERENCES `service` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `service_extension_ibfk_2` FOREIGN KEY (`mixin`) REFERENCES `mixin` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
+
+
 --
 -- Contraintes pour la table `vm`
 --
 ALTER TABLE `vm`
   ADD CONSTRAINT `vm_ibfk_1` FOREIGN KEY (`autoscalinggroup`) REFERENCES `autoscalinggroup` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- --------------------------------------------------------- --
+--                           FIN                             --
+-- --------------------------------------------------------- --

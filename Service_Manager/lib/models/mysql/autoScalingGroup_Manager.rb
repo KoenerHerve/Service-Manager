@@ -637,16 +637,9 @@ WHERE autoscalinggroup.id = ?"
 			dependences.each do |dependence|
 				dependence = dependence.split('/').last
 				dependence = getManagerOf("dependence").getUnique(dependence)
-				dependence = self.getUnique(dependence.target.split('/').last)
-				dmixins = dependence.mixins.split(',')
-				#for each mixins of the dependence
-				dmixins.each do |dmixin|
-					# we check if the dependence is linked with the good mixin
-					(find = true; break) if dmixin == mixin
-				end
-				# ok no need to check the others dependences
-				(asg=dependence;break) if find
-
+				idDep = dependence.target.split('/').last
+				mixins = getMixin(idDep, mixin)
+				(asg=self.getUnique(idDep);break) if !mixins.empty?
 			end
 			
 			if asg != nil

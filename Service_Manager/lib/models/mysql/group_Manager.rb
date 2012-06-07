@@ -7,8 +7,9 @@ class Group_Manager
 	# create
 	# Create a new a group instance.
 	# group: _Group_ The Group instance.
+	# start: _Boolean_ True if we want to start the target and the source, false otherwhise.
 	# throws: DatabaseError : throw if there is a Mysql Error.
-	def create(group)
+	def create(group, start)
 		begin
 			source = group.source.split("/").last
 			target = group.target.split("/").last
@@ -17,8 +18,16 @@ class Group_Manager
 			st = dao.prepare(sql)
 	  		st.execute(group.title, source, target)
 			last = dao.prepare('SELECT group.id FROM service_manager.group ORDER BY group.id DESC LIMIT 1').execute().fetch[0]
-			st.close
-		
+
+			if start
+				# we shutdown the service
+				st = dao.prepare('UPDATE service SET state = "inactive" WHERE id = ?')
+				st.execute(source)
+				st.close
+
+				# we start the service
+				self.getManagerOf("service").start(source)
+			end
 			return last
 		rescue Mysql::Error => e
 			raise DatabaseError, "DatabaseError: "+e.message

@@ -47,7 +47,7 @@ class Group_Controler
 					request.getAttribute('occi.core.target')]
 				group = Group.new(val)
 				group_manager = self.getManagerOf("group")
-				id = group.id == nil ? group_manager.create(group): group_manager.update(group, true)
+				id = group.id == nil ? group_manager.create(group, true): group_manager.update(group, true)
 
 				# We link the resource to the mixins
 				request.category.each_index do |i|

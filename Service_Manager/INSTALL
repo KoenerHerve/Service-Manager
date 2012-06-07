@@ -14,5 +14,9 @@ sudo gem install nokogiri
 
 # Creation of the database
 # -------------------------
-mysql --user=root --password
-> CREATE DATABASE service_manager;
+echo -n "Please enter the database password:"
+stty -echo
+read pwsd
+stty echo
+mysql -uroot --password=$pwsd  -e "CREATE DATABASE service_manager"
+mysql -uroot --password=$pwsd  service_manager < service_manager.sql

@@ -35,13 +35,14 @@ class Vm_Manager
 					<HOSTNAME>$name</HOSTNAME>
 					<IP>$NIC[IP, NETWORK_ID="+network.split('/').last+"]</IP>
 					<NETMASK>255.255.255.0</NETMASK>
-					<FILES>"+File.expand_path("images/"+instanceType+"/init.sh")+" /vm/id_rsa.pub "+File.expand_path("images/context/service.rb")+" "+File.expand_path("images/context/cmd.sh")+" "+File.expand_path("images/context/client.rb")+"</FILES>
+					<FILES>"+File.expand_path("images/"+storage_name+"/init.sh")+" "+File.expand_path("~/.ssh/id_rsa.pub")+" "+File.expand_path("images/context/service.rb")+" "+File.expand_path("images/context/cmd.sh")+" "+File.expand_path("images/context/client.rb")+"</FILES>
 					<ROOT_PUBKEY>id_rsa.pub</ROOT_PUBKEY>
 					<TARGET>hdc</TARGET>
 				</CONTEXT>
 				</COMPUTE>"
-			xml = Nokogiri::XML(Vm_Manager.send(ONE_server+"compute", "post", xml))
-			raise VmError, "VmError: the above xml have no tag COMPUTE \n"+xml if xml.xpath('//COMPUTE') == nil || xml.xpath('//COMPUTE').last == nil
+			rep = Vm_Manager.send(ONE_server+"compute", "post", xml)
+			xml = Nokogiri::XML(rep)
+			raise VmError, "VmError: the above xml have no tag COMPUTE \n["+rep+"]" if xml.xpath('//COMPUTE') == nil || xml.xpath('//COMPUTE').last == nil
 			url = xml.xpath('//COMPUTE').last["href"]
 			while !Vm_Manager.isState?(url,"ACTIVE") do
 				sleep Refresh
@@ -58,18 +59,7 @@ class Vm_Manager
 	# throws: VmError : throw if there is a connection error or if opennebula throw an Exception.
 	def delete(url)
 		begin
-			xml = Nokogiri::XML(Vm_Manager.send(url, "get", ""))
-			raise VmError, "VmError: the above xml have no tag STORAGE \n"+xml if xml.xpath('//STORAGE') == nil
-			storages =  xml.xpath('//STORAGE')
 			Vm_Manager.send(url, "delete","")
-		
-			storages.each do |storage|
-				url = storage["href"]
-				while !Vm_Manager.isState?(url,"READY") do
-					sleep Refresh
-				end
-				Vm_Manager.send(url, "delete","")
-			end
 		rescue Curl::Err::CurlError => e
 			raise VmError, "VmError: "+e.message
 		end
@@ -112,8 +102,9 @@ class Vm_Manager
 	# throws: VmError : throw if there is a connection error or if opennebula throw an Exception.
 	def execute(url, script)
 		begin
-			xml = Nokogiri::XML(Vm_Manager.send(url, "get", ""))
-			raise VmError, "VmError: the above xml have no tag STATE \n"+xml if xml.xpath('//STATE') == nil
+			rep = Vm_Manager.send(url, "get", "")
+			xml = Nokogiri::XML(rep)
+			raise VmError, "VmError: the above xml have no tag STATE \n["+rep+"]" if xml.xpath('//STATE') == nil
 			state =  xml.xpath('//STATE')[0].content
 			self.start(url) if state == "STOPPED"
 
@@ -186,12 +177,13 @@ class Vm_Manager
 			# if the network resource does't exist
 			# (when it's the first time we launch the service manager)
 			if @@network == nil
-				xml = Nokogiri::XML(Vm_Manager.send(ONE_server+"network", "post","<NETWORK>
+				rep = Vm_Manager.send(ONE_server+"network", "post","<NETWORK>
 							<NAME>Service_Manager_Network</NAME>
 							<ADDRESS>"+NetworkAdress+"</ADDRESS>
 							<SIZE>"+NetworkSize.to_s+"</SIZE>
-						</NETWORK>"))
-				raise VmError, "VmError: the above xml have no tag NETWORK \n"+xml if xml.xpath('//NETWORK') == nil || xml.xpath('//NETWORK').last == nil
+						</NETWORK>")
+				xml = Nokogiri::XML(rep)
+				raise VmError, "VmError: the above xml have no tag NETWORK \n["+rep+"]" if xml.xpath('//NETWORK') == nil || xml.xpath('//NETWORK').last == nil
 				@@network = xml.xpath('//NETWORK').last["href"]
 			end
 			
@@ -220,9 +212,9 @@ class Vm_Manager
 						<TYPE>OS</TYPE>
 						<URL>file://images/"+name+"/"+name+".img</URL>
 						</STORAGE>"
-
+				puts occixml
 				occixml = Curl::PostField.content("occixml", occixml)
-				file = Curl::PostField.file("file","images/"+name+".img")
+				file = Curl::PostField.file("file","images/"+name+"/"+name+".img")
 				c = Curl::Easy.new(ONE_server+"storage")
 				c.http_auth_types = :basic
 				c.username = ONE_login
@@ -230,9 +222,10 @@ class Vm_Manager
 				c.multipart_form_post =true
 
 				c.http_post(occixml, file)
-
-				xml = Nokogiri::XML(c.body_str)
-				raise VmError, "VmError: the above xml have no tag STORAGE \n"+xml if xml.xpath('//STORAGE') == nil || xml.xpath('//STORAGE').last == nil
+				
+				rep = c.body_str
+				xml = Nokogiri::XML(rep)
+				raise VmError, "VmError: the above xml have no tag STORAGE \n["+rep+"]" if xml.xpath('//STORAGE') == nil || xml.xpath('//STORAGE').last == nil
 				@@storage = xml.xpath('//STORAGE').last["href"]
 
 				while !Vm_Manager.isState?(@@storage,"READY") do
@@ -278,8 +271,9 @@ class Vm_Manager
 	# return: true if the state correspond to the state attribute, false otherwise
 	# throws: Curl::Err::CurlError : throw if there is a connection error.
 	def Vm_Manager.isState?(url, state)
-		xml = Nokogiri::XML(Vm_Manager.send(url, "get", ""))
-		raise VmError, "VmError: the above xml have no tag STATE \n"+xml if xml.xpath('//STATE') == nil
+		rep = Vm_Manager.send(url, "get", "")
+		xml = Nokogiri::XML(rep)
+		raise VmError, "VmError: the above xml have no tag STATE \n["+rep+"]" if xml.xpath('//STATE') == nil
 		cstate =  xml.xpath('//STATE')[0].content
 		return cstate == state
 	end

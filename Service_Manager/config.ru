@@ -22,7 +22,7 @@ NetworkAdress = "192.168.8.0"
 
 # Service storage configuration
 Default_instanceType = "small"
-Default_imageName = "ttylinux"
+Default_imageName = "ubuntu"
 
 # Database
 # ==========

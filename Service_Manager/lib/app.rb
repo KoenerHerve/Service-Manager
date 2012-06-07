@@ -21,6 +21,7 @@ class App < Sinatra::Base
 		begin
 			view = RequestInterface_Controler.new
 			view.show(contentType)
+			
 		rescue DatabaseError => e
 			Log.error e.message
 			Log.error e.backtrace.join("\n")
@@ -107,7 +108,7 @@ class App < Sinatra::Base
 				#if the resource cannot be associate with the mixin.
 				status = 403
 				Log.error e.message
-			rescue ResourceNotFound, CategoryError, KindNotFoundError  => e
+			rescue ResourceNotFoundError, CategoryError, KindNotFoundError  => e
 				# if the kind does not exist
 				status = 404
 				Log.error e.message
@@ -153,7 +154,7 @@ class App < Sinatra::Base
 			#if the resource cannot be associate with the mixin.
 			status = 403
 			Log.error e.message
-		rescue ResourceNotFound, CategoryError, KindNotFoundError  => e
+		rescue ResourceNotFoundError, CategoryError, KindNotFoundError  => e
 			# if the kind does not exist
 			status = 404
 			Log.error e.message
@@ -199,7 +200,7 @@ class App < Sinatra::Base
 		begin
 			view = Entity_Controler.new
 			view.show("#{kind}", "#{id}", contentType)
-		rescue ResourceNotFound, KindNotFoundError  => e
+		rescue ResourceNotFoundError, KindNotFoundError  => e
 			# if the kind does not exist
 			status = 404
 			Log.error e.message

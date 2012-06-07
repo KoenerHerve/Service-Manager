@@ -76,7 +76,7 @@ class Service_Controler
 							link[0]]
 						group = Group.new(val)
 						group_manager = self.getManagerOf("group")
-						group.id == nil ? group_manager.create(group): group_manager.update(group, true)
+						group.id == nil ? group_manager.create(group, false): group_manager.update(group, true)
 					end
 				end
 
